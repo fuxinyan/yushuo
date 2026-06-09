@@ -31,7 +31,7 @@ gateForm.addEventListener("submit", (event) => {
     return;
   }
 
-  gateError.textContent = "访问码不对。你可以使用页面上的演示访问码进入原型。";
+  gateError.textContent = "访问码不对，请确认后再试。";
   accessInput.select();
 });
 
