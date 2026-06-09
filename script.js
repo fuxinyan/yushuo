@@ -4,22 +4,37 @@ const gateForm = document.querySelector("#gateForm");
 const gateError = document.querySelector("#gateError");
 const accessInput = document.querySelector("#accessCode");
 const chips = document.querySelectorAll(".chip");
-const quoteCards = document.querySelectorAll(".quote-card");
+const quoteGrid = document.querySelector("#quoteGrid");
+const liveGrid = document.querySelector("#liveGrid");
+const liveStatus = document.querySelector("#liveStatus");
+const totalMetric = document.querySelector("#totalMetric");
 const simForm = document.querySelector("#simForm");
 const simInput = document.querySelector("#simInput");
 const simResult = document.querySelector("#simResult");
 const contributeForm = document.querySelector("#contributeForm");
 const formStatus = document.querySelector("#formStatus");
+const backend = window.YUSHUO_BACKEND || {};
+const baseCount = 128;
 
 const riskyPatterns = [
   /1[3-9]\d{9}/,
   /[\w.-]+@[\w.-]+\.\w+/,
-  /微信|手机号|身份证|住址|照片|截图|导师姓名|真实姓名|学院|课题组/,
+  /微信|手机号|身份证|住址|照片|截图|导师姓名|真实姓名|学院|课题组|学校|工号|邮箱/,
 ];
+
+const categoryMeta = {
+  投饵: { kind: "bait", className: "" },
+  甩尾: { kind: "tail", className: "danger" },
+  潜水: { kind: "dive", className: "blue" },
+  改水温: { kind: "drift", className: "amber" },
+  责任回潮: { kind: "tail", className: "danger" },
+};
 
 if (window.localStorage.getItem("yushuo-unlocked") === "true") {
   unlockGate();
 }
+
+loadLiveSubmissions();
 
 gateForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -39,7 +54,7 @@ chips.forEach((chip) => {
   chip.addEventListener("click", () => {
     const filter = chip.dataset.filter;
     chips.forEach((item) => item.classList.toggle("active", item === chip));
-    quoteCards.forEach((card) => {
+    document.querySelectorAll(".quote-card").forEach((card) => {
       const shouldShow = filter === "all" || card.dataset.kind === filter;
       card.classList.toggle("is-hidden", !shouldShow);
     });
@@ -87,17 +102,21 @@ contributeForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const drafts = JSON.parse(window.localStorage.getItem("yushuo-drafts") || "[]");
-  drafts.push({
-    scene,
-    category,
-    material,
-    createdAt: new Date().toISOString(),
-  });
-  window.localStorage.setItem("yushuo-drafts", JSON.stringify(drafts));
+  const payload = { scene, category, material };
+  formStatus.textContent = "正在提交。";
 
-  formStatus.textContent = `已保存到本地草稿箱。当前共有 ${drafts.length} 条匿名草稿。`;
-  contributeForm.reset();
+  submitMaterial(payload)
+    .then((saved) => {
+      renderSubmission(saved, true);
+      formStatus.textContent = isBackendConfigured()
+        ? "已提交并上线。刷新页面后仍会公开显示。"
+        : "已在当前浏览器上线预览。配置素材库后，其他人也能看到。";
+      contributeForm.reset();
+    })
+    .catch(() => {
+      formStatus.textContent = "提交失败，请稍后再试。";
+      formStatus.classList.add("warn");
+    });
 });
 
 function unlockGate() {
@@ -105,6 +124,162 @@ function unlockGate() {
   setTimeout(() => {
     gate.hidden = true;
   }, 460);
+}
+
+async function loadLiveSubmissions() {
+  if (!isBackendConfigured()) {
+    liveStatus.textContent = "素材库尚未配置，投稿只会在当前浏览器预览。";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${getSupabaseUrl()}/rest/v1/submissions?select=id,scene,category,material,created_at&order=created_at.desc&limit=48`,
+      {
+        headers: getSupabaseHeaders(),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to load submissions");
+    }
+
+    const submissions = await response.json();
+    liveGrid.innerHTML = "";
+    submissions.forEach((item) => renderSubmission(item, false));
+    updateLiveStatus(submissions.length);
+
+    if (submissions.length === 0) {
+      liveGrid.innerHTML = getEmptyStateHtml("还没有公开来稿", "第一条匿名投稿会自动出现在这里。");
+    }
+  } catch {
+    liveStatus.textContent = "素材库连接失败，请检查 Supabase 配置。";
+    liveStatus.classList.add("warn");
+  }
+}
+
+async function submitMaterial(payload) {
+  if (!isBackendConfigured()) {
+    const localItem = {
+      ...payload,
+      id: `local-${Date.now()}`,
+      created_at: new Date().toISOString(),
+    };
+    const drafts = JSON.parse(window.localStorage.getItem("yushuo-drafts") || "[]");
+    drafts.unshift(localItem);
+    window.localStorage.setItem("yushuo-drafts", JSON.stringify(drafts));
+    return localItem;
+  }
+
+  const response = await fetch(`${getSupabaseUrl()}/rest/v1/submissions`, {
+    method: "POST",
+    headers: {
+      ...getSupabaseHeaders(),
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to submit material");
+  }
+
+  const [saved] = await response.json();
+  return saved;
+}
+
+function renderSubmission(item, prepend) {
+  liveGrid.querySelector(".empty-state")?.remove();
+  const card = createSubmissionCard(item);
+  if (prepend) {
+    liveGrid.prepend(card.cloneNode(true));
+    quoteGrid.prepend(createQuoteCard(item));
+  } else {
+    liveGrid.append(card);
+    quoteGrid.append(createQuoteCard(item));
+  }
+  updateLiveStatus(liveGrid.querySelectorAll(".live-card").length);
+}
+
+function createSubmissionCard(item) {
+  const meta = categoryMeta[item.category] || { className: "" };
+  const article = document.createElement("article");
+  article.className = "live-card";
+
+  const tag = document.createElement("span");
+  tag.className = `tag ${meta.className}`.trim();
+  tag.textContent = item.category || "匿名";
+
+  const heading = document.createElement("h3");
+  heading.textContent = item.scene || "匿名场景";
+
+  const body = document.createElement("p");
+  body.textContent = item.material || "";
+
+  const time = document.createElement("time");
+  time.dateTime = item.created_at || "";
+  time.textContent = formatDate(item.created_at);
+
+  article.append(tag, heading, body, time);
+  return article;
+}
+
+function createQuoteCard(item) {
+  const meta = categoryMeta[item.category] || { kind: "bait", className: "" };
+  const article = document.createElement("article");
+  article.className = "quote-card";
+  article.dataset.kind = meta.kind;
+
+  const tag = document.createElement("span");
+  tag.className = `tag ${meta.className}`.trim();
+  tag.textContent = item.category || "匿名";
+
+  const quote = document.createElement("blockquote");
+  quote.textContent = `“${item.material || ""}”`;
+
+  const note = document.createElement("p");
+  note.textContent = `匿名场景：${item.scene || "未标注"}`;
+
+  article.append(tag, quote, note);
+  return article;
+}
+
+function updateLiveStatus(count) {
+  liveStatus.classList.remove("warn");
+  liveStatus.textContent = isBackendConfigured()
+    ? `已公开 ${count} 条匿名来稿。`
+    : `当前浏览器预览 ${count} 条匿名来稿。`;
+  totalMetric.textContent = String(baseCount + count);
+}
+
+function getEmptyStateHtml(title, copy) {
+  return `<article class="empty-state"><h3>${title}</h3><p>${copy}</p></article>`;
+}
+
+function isBackendConfigured() {
+  return Boolean(backend.supabaseUrl && backend.supabaseAnonKey);
+}
+
+function getSupabaseUrl() {
+  return backend.supabaseUrl.replace(/\/$/, "");
+}
+
+function getSupabaseHeaders() {
+  return {
+    apikey: backend.supabaseAnonKey,
+    Authorization: `Bearer ${backend.supabaseAnonKey}`,
+  };
+}
+
+function formatDate(value) {
+  if (!value) return "刚刚";
+  return new Intl.DateTimeFormat("zh-CN", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(value));
 }
 
 function analyzeWaterline(text) {

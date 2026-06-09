@@ -187,7 +187,8 @@ button:hover,
 }
 
 .gate-error,
-.form-status.warn {
+.form-status.warn,
+.live-status.warn {
   color: #ffad9f;
 }
 
@@ -395,14 +396,17 @@ button:hover,
 }
 
 .quote-grid,
-.guide-grid {
+.guide-grid,
+.live-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
 .quote-card,
-.guide-grid article {
+.guide-grid article,
+.live-card,
+.empty-state {
   min-height: 240px;
   padding: 22px;
   border: 1px solid var(--line);
@@ -451,9 +455,50 @@ blockquote {
 
 .quote-card p,
 .guide-grid p,
-.timeline p {
+.timeline p,
+.live-card p,
+.empty-state p {
   color: var(--muted);
   margin: 0;
+}
+
+.live-band {
+  background:
+    linear-gradient(180deg, rgba(7, 17, 19, 0.94), rgba(7, 17, 19, 0.9)),
+    radial-gradient(circle at 85% 25%, rgba(125, 183, 217, 0.13), transparent 30%);
+}
+
+.live-status {
+  max-width: 360px;
+  margin: 0;
+  color: var(--muted);
+  text-align: right;
+}
+
+.live-card h3,
+.empty-state h3 {
+  margin: 18px 0 12px;
+  color: var(--text);
+  font-size: 1.08rem;
+}
+
+.live-card p {
+  white-space: pre-wrap;
+}
+
+.live-card time {
+  display: block;
+  margin-top: 18px;
+  color: rgba(216, 228, 226, 0.55);
+  font-size: 0.86rem;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .timeline {
@@ -611,6 +656,7 @@ blockquote {
 @media (max-width: 980px) {
   .quote-grid,
   .guide-grid,
+  .live-grid,
   .timeline {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -640,6 +686,7 @@ blockquote {
   .waterline-panel,
   .quote-grid,
   .guide-grid,
+  .live-grid,
   .timeline {
     grid-template-columns: 1fr;
   }
@@ -675,6 +722,11 @@ blockquote {
 
   .section-heading {
     display: block;
+  }
+
+  .live-status {
+    margin-top: 12px;
+    text-align: left;
   }
 
   .timeline li,

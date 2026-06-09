@@ -44,6 +44,7 @@
         </a>
         <div class="nav-links">
           <a href="#quotes">语录</a>
+          <a href="#live">来稿</a>
           <a href="#timeline">纪年</a>
           <a href="#guide">指南</a>
           <a href="#contribute">贡献一鳞</a>
@@ -64,7 +65,7 @@
 
       <aside class="waterline-panel" aria-label="档案馆状态">
         <div>
-          <span class="metric">128</span>
+          <span class="metric" id="totalMetric">128</span>
           <span class="metric-label">条匿名语料</span>
         </div>
         <div>
@@ -104,7 +105,7 @@
             <button class="chip" type="button" data-filter="dive">潜水</button>
             <button class="chip" type="button" data-filter="drift">改水温</button>
           </div>
-          <div class="quote-grid">
+          <div class="quote-grid" id="quoteGrid">
             <article class="quote-card" data-kind="bait">
               <span class="tag">投饵</span>
               <blockquote>“这个项目虽然现在看不清出口，但对你长期成长很有帮助。”</blockquote>
@@ -124,6 +125,24 @@
               <span class="tag blue">潜水</span>
               <blockquote>“这个我们之后再细聊，你先继续推进。”</blockquote>
               <p>典型特征：关键节点缺席，风险出现后返场。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band live-band" id="live" aria-labelledby="live-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Live Submissions</p>
+              <h2 id="live-title">实时来稿</h2>
+            </div>
+            <p class="live-status" id="liveStatus">等待连接素材库。</p>
+          </div>
+          <div class="live-grid" id="liveGrid" aria-live="polite">
+            <article class="empty-state">
+              <h3>还没有公开来稿</h3>
+              <p>配置素材库后，匿名投稿会自动出现在这里。</p>
             </article>
           </div>
         </div>
@@ -245,7 +264,7 @@
               <input id="anonymousCheck" type="checkbox" />
               <span>我已删除真实姓名、联系方式、截图和可识别信息</span>
             </label>
-            <button type="submit">提交到本地草稿</button>
+            <button type="submit">提交并上线</button>
             <p class="form-status" id="formStatus" role="status"></p>
           </form>
         </div>
@@ -257,6 +276,7 @@
       <p>只留水纹，不留人名。</p>
     </footer>
 
+    <script src="./config.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
