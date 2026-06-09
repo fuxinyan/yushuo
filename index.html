@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>鱼说 | 匿名鱼塘档案馆</title>
+    <meta
+      name="description"
+      content="《鱼说》是一个匿名化的沟通模式档案网页原型，用于整理、标注和分析鱼式话术。"
+    />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="access-gate" id="accessGate" aria-live="polite">
+      <div class="gate-panel">
+        <p class="eyebrow">Internal Waterline Access</p>
+        <h1>《鱼说》</h1>
+        <p class="gate-copy">
+          匿名鱼塘沟通档案馆。这里只记录水纹、话术和后果，不记录真实姓名。
+        </p>
+        <form class="gate-form" id="gateForm">
+          <label for="accessCode">内部访问码</label>
+          <div class="gate-row">
+            <input
+              id="accessCode"
+              name="accessCode"
+              type="password"
+              autocomplete="off"
+              placeholder="输入访问码"
+              aria-describedby="gateHint"
+            />
+            <button type="submit" title="进入档案馆">进入</button>
+          </div>
+          <p id="gateHint" class="hint">演示访问码：yu-shuo-8Qn2-2026</p>
+          <p class="gate-error" id="gateError" role="alert"></p>
+        </form>
+      </div>
+    </div>
+
+    <header class="hero" id="top">
+      <nav class="topbar" aria-label="主导航">
+        <a class="brand" href="#top" aria-label="回到鱼说首页">
+          <span class="brand-mark" aria-hidden="true">鱼</span>
+          <span>鱼说</span>
+        </a>
+        <div class="nav-links">
+          <a href="#quotes">语录</a>
+          <a href="#timeline">纪年</a>
+          <a href="#guide">指南</a>
+          <a href="#contribute">贡献一鳞</a>
+        </div>
+      </nav>
+
+      <section class="hero-content">
+        <p class="eyebrow">Anonymous Water Archive</p>
+        <h1>匿名鱼塘沟通档案馆</h1>
+        <p class="hero-lede">
+          收集、归档和分析那些熟悉的“鱼式沟通模式”：甩尾、投饵、潜水、改水温、责任回潮，以及各种“你要上岸”“你要沉淀”“这个项目对你有帮助”的经典水文。
+        </p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#contribute">贡献一鳞</a>
+          <a class="secondary-action" href="#simulator">测试一句水文</a>
+        </div>
+      </section>
+
+      <aside class="waterline-panel" aria-label="档案馆状态">
+        <div>
+          <span class="metric">128</span>
+          <span class="metric-label">条匿名语料</span>
+        </div>
+        <div>
+          <span class="metric">7</span>
+          <span class="metric-label">类水流模式</span>
+        </div>
+        <div>
+          <span class="metric">0</span>
+          <span class="metric-label">真实姓名</span>
+        </div>
+      </aside>
+    </header>
+
+    <main>
+      <section class="band intro-band" aria-labelledby="manifesto-title">
+        <div class="section-inner two-column">
+          <div>
+            <p class="eyebrow">Archive Policy</p>
+            <h2 id="manifesto-title">只留水纹，不留人名</h2>
+          </div>
+          <p>
+            《鱼说》不是指向具体个人的网页，而是一个针对沟通模式的匿名语料库原型。它保留场景、话术、时间线和后果；删除姓名、院系、项目名、截图和任何能直接识别个人的信息。
+          </p>
+        </div>
+      </section>
+
+      <section class="band" id="quotes" aria-labelledby="quotes-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Annotated Quotes</p>
+            <h2 id="quotes-title">鱼式语录馆</h2>
+          </div>
+          <div class="filter-row" role="tablist" aria-label="语录分类">
+            <button class="chip active" type="button" data-filter="all">全部</button>
+            <button class="chip" type="button" data-filter="bait">投饵</button>
+            <button class="chip" type="button" data-filter="tail">甩尾</button>
+            <button class="chip" type="button" data-filter="dive">潜水</button>
+            <button class="chip" type="button" data-filter="drift">改水温</button>
+          </div>
+          <div class="quote-grid">
+            <article class="quote-card" data-kind="bait">
+              <span class="tag">投饵</span>
+              <blockquote>“这个项目虽然现在看不清出口，但对你长期成长很有帮助。”</blockquote>
+              <p>典型特征：收益延后、边界模糊、投入立刻发生。</p>
+            </article>
+            <article class="quote-card" data-kind="tail">
+              <span class="tag danger">甩尾</span>
+              <blockquote>“我只是给了方向，具体执行问题还是你自己要把握。”</blockquote>
+              <p>典型特征：决策上浮，责任下沉。</p>
+            </article>
+            <article class="quote-card" data-kind="drift">
+              <span class="tag amber">改水温</span>
+              <blockquote>“我之前不是这个意思，你理解得太机械了。”</blockquote>
+              <p>典型特征：标准移动，复盘时重新定义原话。</p>
+            </article>
+            <article class="quote-card" data-kind="dive">
+              <span class="tag blue">潜水</span>
+              <blockquote>“这个我们之后再细聊，你先继续推进。”</blockquote>
+              <p>典型特征：关键节点缺席，风险出现后返场。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band muted" id="timeline" aria-labelledby="timeline-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Waterline Chronicle</p>
+            <h2 id="timeline-title">鱼塘纪年</h2>
+          </div>
+          <ol class="timeline">
+            <li>
+              <time>入塘期</time>
+              <h3>投饵与愿景绑定</h3>
+              <p>用成长、资源和未来成果吸引加入，但任务边界和退出机制尚未写清。</p>
+            </li>
+            <li>
+              <time>换流期</time>
+              <h3>方向漂移</h3>
+              <p>目标从 A 游到 B，再由 B 游回 A；每一次漂移都被解释为“这是研究过程”。</p>
+            </li>
+            <li>
+              <time>涨潮期</time>
+              <h3>责任回潮</h3>
+              <p>集体决策逐渐变成个体执行，执行风险又在复盘时回到执行者身上。</p>
+            </li>
+            <li>
+              <time>临岸期</time>
+              <h3>标准再定义</h3>
+              <p>临近节点时，原本的验收标准突然升高，且被描述为“本来就应该这样”。</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="band" id="guide" aria-labelledby="guide-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Exit Handbook</p>
+            <h2 id="guide-title">上岸指南</h2>
+          </div>
+          <div class="guide-grid">
+            <article>
+              <span class="guide-index">01</span>
+              <h3>把水文变成文字</h3>
+              <p>会后用简短邮件复述任务、产出、时间点和责任边界，让“口头水流”留下可追踪记录。</p>
+            </article>
+            <article>
+              <span class="guide-index">02</span>
+              <h3>确认验收标准</h3>
+              <p>遇到“先做着看”时，追问最低可接受版本、不可接受条件和下一次检查时间。</p>
+            </article>
+            <article>
+              <span class="guide-index">03</span>
+              <h3>拆开成长叙事</h3>
+              <p>把“对你有帮助”拆成具体资源、署名、训练、数据、时间投入和退出成本。</p>
+            </article>
+            <article>
+              <span class="guide-index">04</span>
+              <h3>保留低冲突回应</h3>
+              <p>用“我确认一下我的理解”替代正面争辩，优先争取清楚、可执行、可回查。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band split-band" id="simulator" aria-labelledby="sim-title">
+        <div class="section-inner split-layout">
+          <div>
+            <p class="eyebrow">Prototype Lab</p>
+            <h2 id="sim-title">鱼式模拟器</h2>
+            <p class="section-copy">
+              输入一句熟悉的话，系统会粗略判断它更像哪一种水流，并生成一个更安全的回应模板。
+            </p>
+          </div>
+          <form class="simulator" id="simForm">
+            <label for="simInput">待分析水文</label>
+            <textarea id="simInput" placeholder="例如：这个项目先做着，对你以后肯定有帮助。"></textarea>
+            <button type="submit">分析水流</button>
+            <output class="sim-result" id="simResult">等待输入。</output>
+          </form>
+        </div>
+      </section>
+
+      <section class="band muted" id="contribute" aria-labelledby="contribute-title">
+        <div class="section-inner contribute-layout">
+          <div>
+            <p class="eyebrow">Submit Anonymously</p>
+            <h2 id="contribute-title">贡献一鳞</h2>
+            <p class="section-copy">
+              投稿请尽量描述场景、话术、后果和时间线。不要填写真实姓名、联系方式、照片、住址、未经打码截图或能直接识别具体个人的信息。
+            </p>
+            <ul class="safety-list" aria-label="投稿安全规则">
+              <li>不提交真实姓名</li>
+              <li>不提交联系方式</li>
+              <li>不提交未打码截图</li>
+              <li>不提交具体院系或项目名</li>
+            </ul>
+          </div>
+          <form class="contribute-form" id="contributeForm">
+            <label for="scene">匿名场景</label>
+            <input id="scene" name="scene" placeholder="例如：组会后、投稿前、毕业节点" />
+            <label for="category">模式分类</label>
+            <select id="category" name="category">
+              <option>投饵</option>
+              <option>甩尾</option>
+              <option>潜水</option>
+              <option>改水温</option>
+              <option>责任回潮</option>
+            </select>
+            <label for="material">匿名素材</label>
+            <textarea
+              id="material"
+              name="material"
+              placeholder="描述原话、行为、后果和时间线。请先删除所有可识别信息。"
+            ></textarea>
+            <label class="checkbox-row">
+              <input id="anonymousCheck" type="checkbox" />
+              <span>我已删除真实姓名、联系方式、截图和可识别信息</span>
+            </label>
+            <button type="submit">提交到本地草稿</button>
+            <p class="form-status" id="formStatus" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>世有深水，然后有《鱼说》。</p>
+      <p>只留水纹，不留人名。</p>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,689 @@
+:root {
+  color-scheme: dark;
+  --ink: #071113;
+  --deep: #0b1b21;
+  --panel: rgba(12, 29, 34, 0.82);
+  --panel-solid: #102328;
+  --line: rgba(205, 230, 232, 0.18);
+  --text: #eef8f7;
+  --muted: #a9c3c3;
+  --silver: #d8e4e2;
+  --coral: #ff6f61;
+  --amber: #d8a74e;
+  --kelp: #72b18a;
+  --blue: #7db7d9;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.6;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(90deg, rgba(7, 17, 19, 0.92), rgba(7, 17, 19, 0.62)),
+    url("./assets/deep-water-archive.png") center / cover;
+}
+
+.access-gate[hidden] {
+  display: none;
+}
+
+.access-gate.unlocked {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.gate-panel {
+  width: min(520px, 100%);
+  padding: clamp(24px, 5vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(8, 22, 26, 0.88);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--kelp);
+  font-size: 0.74rem;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.gate-panel h1,
+.hero h1,
+.section-heading h2,
+.intro-band h2,
+.split-layout h2,
+.contribute-layout h2 {
+  margin: 0;
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.gate-panel h1 {
+  font-size: clamp(3rem, 12vw, 6.5rem);
+}
+
+.gate-copy {
+  max-width: 34rem;
+  margin: 18px 0 28px;
+  color: var(--muted);
+}
+
+.gate-form label,
+.simulator label,
+.contribute-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--silver);
+  font-weight: 700;
+}
+
+.gate-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(238, 248, 247, 0.07);
+  color: var(--text);
+  outline: none;
+}
+
+input,
+select {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+textarea {
+  min-height: 128px;
+  resize: vertical;
+  padding: 12px 14px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: rgba(125, 183, 217, 0.8);
+  box-shadow: 0 0 0 3px rgba(125, 183, 217, 0.14);
+}
+
+button,
+.primary-action,
+.secondary-action {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  color: #061112;
+  background: var(--silver);
+  font-weight: 780;
+}
+
+button:hover,
+.primary-action:hover,
+.secondary-action:hover {
+  transform: translateY(-1px);
+}
+
+.hint,
+.gate-error,
+.form-status {
+  min-height: 1.5em;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.gate-error,
+.form-status.warn {
+  color: #ffad9f;
+}
+
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 22px clamp(18px, 4vw, 64px) 44px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(7, 17, 19, 0.94) 0%, rgba(7, 17, 19, 0.68) 42%, rgba(7, 17, 19, 0.28) 100%),
+    url("./assets/deep-water-archive.png") center / cover;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 28vh;
+  background: linear-gradient(0deg, var(--ink), rgba(7, 17, 19, 0));
+  pointer-events: none;
+}
+
+.topbar,
+.hero-content,
+.waterline-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 820;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(216, 228, 226, 0.12);
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.nav-links a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  background: rgba(238, 248, 247, 0.08);
+}
+
+.hero-content {
+  width: min(760px, 100%);
+  align-self: center;
+  padding: 86px 0 44px;
+}
+
+.hero h1 {
+  max-width: 10ch;
+  font-size: clamp(3.6rem, 8.6vw, 7.8rem);
+}
+
+.hero-lede {
+  max-width: 680px;
+  margin: 24px 0 0;
+  color: var(--silver);
+  font-size: clamp(1rem, 1.7vw, 1.24rem);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.primary-action {
+  background: var(--coral);
+  color: #fff8f5;
+}
+
+.secondary-action {
+  border: 1px solid var(--line);
+  background: rgba(238, 248, 247, 0.08);
+  color: var(--text);
+}
+
+.waterline-panel {
+  width: min(720px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.waterline-panel div {
+  min-height: 92px;
+  padding: 18px;
+  background: rgba(7, 17, 19, 0.64);
+}
+
+.metric {
+  display: block;
+  font-size: 2rem;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.metric-label {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.band {
+  padding: clamp(64px, 9vw, 112px) clamp(18px, 4vw, 64px);
+  background: var(--ink);
+}
+
+.band.muted {
+  background: #0b1618;
+}
+
+.section-inner {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 6vw, 72px);
+  align-items: start;
+}
+
+.intro-band p:last-child,
+.section-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.intro-band h2,
+.section-heading h2,
+.split-layout h2,
+.contribute-layout h2 {
+  font-size: clamp(2rem, 4.3vw, 4.2rem);
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chip {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: rgba(238, 248, 247, 0.06);
+  color: var(--silver);
+}
+
+.chip.active {
+  background: var(--silver);
+  color: var(--ink);
+}
+
+.quote-grid,
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quote-card,
+.guide-grid article {
+  min-height: 240px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.quote-card.is-hidden {
+  display: none;
+}
+
+.tag {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(114, 177, 138, 0.16);
+  color: #9ee2b5;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.tag.danger {
+  background: rgba(255, 111, 97, 0.16);
+  color: #ffad9f;
+}
+
+.tag.amber {
+  background: rgba(216, 167, 78, 0.16);
+  color: #f2c86f;
+}
+
+.tag.blue {
+  background: rgba(125, 183, 217, 0.16);
+  color: #a9d8f1;
+}
+
+blockquote {
+  margin: 24px 0 18px;
+  color: var(--text);
+  font-size: 1.18rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.quote-card p,
+.guide-grid p,
+.timeline p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.timeline {
+  counter-reset: waterline;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.timeline li {
+  position: relative;
+  min-height: 280px;
+  padding: 24px;
+  border-right: 1px solid var(--line);
+  background: rgba(238, 248, 247, 0.035);
+}
+
+.timeline li:last-child {
+  border-right: 0;
+}
+
+.timeline li::before {
+  counter-increment: waterline;
+  content: "0" counter(waterline);
+  display: block;
+  margin-bottom: 40px;
+  color: rgba(216, 228, 226, 0.24);
+  font-size: 2.6rem;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.timeline time {
+  color: var(--kelp);
+  font-weight: 800;
+}
+
+.timeline h3,
+.guide-grid h3 {
+  margin: 10px 0 12px;
+  color: var(--text);
+  font-size: 1.12rem;
+}
+
+.guide-index {
+  display: block;
+  color: var(--coral);
+  font-weight: 820;
+}
+
+.split-band {
+  background:
+    linear-gradient(180deg, rgba(7, 17, 19, 0.86), rgba(7, 17, 19, 0.94)),
+    url("./assets/deep-water-archive.png") center / cover fixed;
+}
+
+.split-layout,
+.contribute-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(28px, 6vw, 72px);
+  align-items: start;
+}
+
+.simulator,
+.contribute-form {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(8, 22, 26, 0.86);
+  box-shadow: var(--shadow);
+}
+
+.simulator button,
+.contribute-form button {
+  width: 100%;
+  margin-top: 12px;
+  background: var(--silver);
+}
+
+.sim-result {
+  display: block;
+  min-height: 104px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--silver);
+  background: rgba(238, 248, 247, 0.06);
+  white-space: pre-wrap;
+}
+
+.contribute-form {
+  display: grid;
+  gap: 10px;
+}
+
+.contribute-form label {
+  margin: 0;
+}
+
+.safety-list {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 28px 0 0;
+  list-style: none;
+}
+
+.safety-list li {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  color: var(--silver);
+}
+
+.checkbox-row {
+  display: grid !important;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  color: var(--muted) !important;
+  font-weight: 500 !important;
+}
+
+.checkbox-row input {
+  width: 18px;
+  min-height: 18px;
+  margin-top: 4px;
+  accent-color: var(--kelp);
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 28px clamp(18px, 4vw, 64px);
+  border-top: 1px solid var(--line);
+  background: #050b0d;
+  color: var(--muted);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .quote-grid,
+  .guide-grid,
+  .timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeline li:nth-child(2) {
+    border-right: 0;
+  }
+
+  .timeline li:nth-child(1),
+  .timeline li:nth-child(2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .split-layout,
+  .contribute-layout,
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .access-gate {
+    padding: 16px;
+  }
+
+  .gate-row,
+  .waterline-panel,
+  .quote-grid,
+  .guide-grid,
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .gate-row button {
+    width: 100%;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero h1 {
+    max-width: 8ch;
+  }
+
+  .hero-content {
+    padding-top: 68px;
+  }
+
+  .waterline-panel div {
+    min-height: 78px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .timeline li,
+  .timeline li:nth-child(2) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .timeline li:last-child {
+    border-bottom: 0;
+  }
+}
